@@ -1,0 +1,111 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * CodeIgniter
+ *
+ * An open source application development framework for PHP
+ *
+ * This content is released under the MIT License (MIT)
+ *
+ * Copyright (c) 2014 - 2024, British Columbia Institute of Technology
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @package    CodeIgniter
+ * @author     CodeIgniter Dev Team
+ * @copyright  2014 - 2024, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license    https://opensource.org/licenses/MIT	MIT License
+ * @link       https://codeigniter.com
+ * @since      Version 4.0.0
+ * @filesource
+ */
+
+/*
+ *---------------------------------------------------------------
+ * DEFINE APPLICATION CONSTANTS
+ *---------------------------------------------------------------
+ *
+ * These constants are primarily used by the framework core
+ * and should not be modified unless you know what you're doing.
+ *
+ */
+
+// Path to the framework's front controller.
+define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
+
+// Path to the root directory.
+define('ROOTPATH', realpath(__DIR__ . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR);
+
+// Path to the "app" directory.
+if (! defined('APPPATH')) {
+    define('APPPATH', realpath(__DIR__ . DIRECTORY_SEPARATOR . 'app') . DIRECTORY_SEPARATOR);
+}
+
+// Path to the "writable" directory.
+if (! defined('WRITEPATH')) {
+    define('WRITEPATH', realpath(__DIR__ . DIRECTORY_SEPARATOR . 'writable') . DIRECTORY_SEPARATOR);
+}
+
+// Path to the "tests" directory.
+if (! defined('TESTPATH')) {
+    define('TESTPATH', realpath(__DIR__ . DIRECTORY_SEPARATOR . 'tests') . DIRECTORY_SEPARATOR);
+}
+
+/*
+ *---------------------------------------------------------------
+ * BOOTSTRAP THE APPLICATION
+ *---------------------------------------------------------------
+ * This process sets up the path constants, loads and registers
+ * our autoloader, along with Composer's, loads our constants
+ * and fires up an environment-specific bootstrapping.
+ */
+
+// Load our paths config file
+// This is the line that might need to be changed.
+require FCPATH . '../app/Config/Paths.php';
+
+// ^^^ Change this line if you move your application folder
+$paths = new Config\Paths();
+
+// Load constants
+require APPPATH . 'Config/Constants.php';
+
+// Location of the framework bootstrap file.
+require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
+
+// Load environment settings from .env files into $_SERVER and $_ENV
+require_once SYSTEMPATH . 'Config/DotEnv.php';
+(new CodeIgniter\Config\DotEnv(ROOTPATH))->load();
+
+// Define ENVIRONMENT
+if (! defined('ENVIRONMENT')) {
+    define('ENVIRONMENT', env('CI_ENVIRONMENT', 'production'));
+}
+
+/*
+ *---------------------------------------------------------------
+ * GRAB THE CODEIGNITER "SPARK" SCRIPT
+ *---------------------------------------------------------------
+ *
+ * And away we go...
+ */
+
+$spark = new CodeIgniter\Spark\Spark($paths);
+$spark->run();
