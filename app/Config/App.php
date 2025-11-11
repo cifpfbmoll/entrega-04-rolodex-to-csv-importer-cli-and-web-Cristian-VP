@@ -265,4 +265,17 @@ class App extends BaseConfig
      * the browser is allowed to load resources from. Helps prevent XSS attacks.
      */
     public $CSPEnabled = false;
+
+    /**
+     * -------------------------------------------------------------------
+     * Allowed Hostnames
+     * -------------------------------------------------------------------
+     *
+     * If you want to restrict which hostnames are allowed to access your
+     * application, you can set them here. An empty array means all hostnames
+     * are allowed.
+     *
+     * Example: ['localhost', 'example.com', 'www.example.com']
+     */
+    public array $allowedHostnames = [];
 }

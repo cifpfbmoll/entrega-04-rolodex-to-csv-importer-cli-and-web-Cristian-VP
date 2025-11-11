@@ -1,141 +1,174 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/keP9ug1F)
-# Rolodex to CSV CLI Importer
+# Rolodex Contact Importer - Importador de Contactos
 
-A CodeIgniter 4 custom command-line tool for importing contact information from physical Rolodex cards into a digital CSV format.
-
-## 📋 Overview
-
-This command-line application allows travel agents (or any user with physical contact cards) to manually enter contact information and save it to a CSV file for digital recordkeeping.
-
-## 🚀 Features
-
-- **Interactive CLI Input**: Prompts for Name, Phone, and Email
-- **CSV Storage**: Automatically appends data to `writable/contacts.csv`
-- **Header Management**: Creates CSV header automatically on first use
-- **Continuous Loop**: Enter multiple contacts in one session
-- **Easy Exit**: Type "exit" or "quit" at the Name prompt to finish
-
-## 📁 File Structure
-
-```
-rolodex/
-├── app/
-│   └── Commands/
-│       └── ContactImport.php    # Main command file
-├── writable/
-│   └── contacts.csv             # Generated CSV file (created automatically)
-└── spark                         # CodeIgniter 4 CLI entry point
-```
-
-## 🔧 Installation
-
-### If you already have a CodeIgniter 4 project:
-
-1. Copy `app/Commands/ContactImport.php` to your project's `app/Commands/` directory
-2. Ensure your `writable/` directory has write permissions (755 or 777)
-
-### If starting from scratch:
-
-1. Install CodeIgniter 4:
-   ```bash
-   composer create-project codeigniter4/appstarter rolodex
-   cd rolodex
-   ```
-
-2. Copy the `ContactImport.php` file to `app/Commands/`
-
-3. Ensure proper permissions:
-   ```bash
-   chmod -R 755 writable/
-   ```
-
-## 💻 Usage
-
-Run the command from your project root:
-
-```bash
-php spark import:contacts
-```
-
-### Example Session
-
-```
-===========================================
-  Rolodex Contact Importer
-===========================================
-
-Enter contact information from your physical Rolodex.
-Type "exit" or "quit" at the Name prompt to finish.
-
-CSV file initialized: /path/to/writable/contacts.csv
-
--------------------------------------------
-Full Name: Victor Frankenstein
-Phone Number: 555-776-2323
-Email Address: doctor@nodedojo.com
-✓ Contact saved successfully!
-
--------------------------------------------
-Full Name: Jane Smith
-Phone Number: 555-123-4567
-Email Address: jane.smith@example.com
-✓ Contact saved successfully!
-
--------------------------------------------
-Full Name: exit
-
-Import session completed. Total contacts added: 2
-CSV file location: /path/to/writable/contacts.csv
-```
-
-## 📄 CSV Output Format
-
-The generated CSV file (`writable/contacts.csv`) has the following structure:
-
-```csv
-Name,Phone,Email
-Victor Frankenstein,555-776-2323,doctor@nodedojo.com
-Jane Smith,555-123-4567,jane.smith@example.com
-```
-
-## ⚙️ Technical Details
-
-- **Framework**: CodeIgniter 4
-- **Command Group**: Import
-- **Command Name**: `import:contacts`
-- **PHP Requirements**: PHP 7.4 or higher (CodeIgniter 4 requirement)
-- **Dependencies**: Uses only standard CodeIgniter 4 CLI libraries
-
-## 🛠️ Features Implemented
-
-✅ CodeIgniter 4 custom spark command  
-✅ Interactive CLI input using `CLI::prompt()`  
-✅ CSV file creation and append functionality  
-✅ Automatic header row creation  
-✅ Continuous input loop with exit condition  
-✅ Input validation (empty name check)  
-✅ Success/error feedback messages  
-✅ Contact counter for session summary  
-
-## 📝 Notes
-
-- The CSV file is stored in the `writable/` directory for security and proper permissions
-- Phone and email fields can be empty if needed
-- Name field is required (cannot be empty)
-- The command uses standard PHP CSV functions (`fputcsv`) for proper formatting
-- All data is trimmed before saving to remove extra whitespace
-
-## 🔒 Security Considerations
-
-- File is stored in `writable/` directory (not web-accessible by default)
-- No web interface or routes (CLI-only application)
-- Uses CodeIgniter's built-in WRITEPATH constant for secure file location
-
-## 🤝 Support
-
-For CodeIgniter 4 documentation, visit: https://codeigniter.com/user_guide/
+Sistema de importación de contactos desde fichas físicas de Rolodex a formato CSV usando CodeIgniter 4.
 
 ---
 
-**Created for**: Travel agents and professionals who need to digitize physical contact information  
-**Use Case**: Converting physical Rolodex cards to digital CSV format
+## Resumen del Proyecto
+
+**Aplicación CLI** para digitalizar contactos de un Rolodex físico mediante entrada interactiva por consola, guardando los datos en un archivo CSV persistente.
+
+### Funciones Principales
+
+1. **Importación CLI Interactiva**: Solicita datos de contacto (Nombre, Teléfono, Email) en bucle
+2. **Persistencia CSV**: Guarda contactos en `writable/contacts.csv` con encabezado automático
+3. **Interfaz Web MVC**: Visualización básica de contactos mediante controladores y vistas
+4. **Scripts Standalone**: Importador independiente que no requiere framework completo
+
+---
+
+## Estructura del Proyecto
+
+```
+04-rolodex-csv/
+├── app/
+│   ├── Commands/
+│   │   └── ContactImport.php          # ⭐ Comando Spark principal
+│   ├── Config/
+│   │   ├── Paths.php                  # Rutas del sistema
+│   │   ├── Routes.php                 # Definición de rutas web
+│   │   ├── Boot/
+│   │   │   ├── development.php        # Bootstrap desarrollo
+│   │   │   └── production.php         # Bootstrap producción
+│   ├── Controllers/
+│   │   └── Contacts.php               # Controlador web de contactos
+│   └── Views/
+│       └── contacts/
+│           ├── index.php              # Vista listado
+│           └── create.php             # Vista crear contacto
+├── writable/
+│   └── contacts.csv                   # 💾 Archivo CSV de salida
+├── examples/
+│   └── sample-contacts.csv            # Ejemplo de formato CSV
+├── public/
+│   └── index.php                      # Front controller web
+├── contact-importer.php               # 🚀 Script standalone
+├── test-importer.php                  # ✅ Script de prueba
+├── spark                              # CLI de CodeIgniter
+└── .env                               # Variables de entorno
+
+```
+
+---
+### ** Instalación de Dependencias**
+
+```bash
+cd /home/thian/PhpstormProjects/04-rolodex-csv
+composer install
+composer dump-autoload -o
+```
+
+**Captura sugerida**: Salida del comando `composer install` mostrando las dependencias instaladas.
+
+---
+
+### ** Configuración del Entorno**
+
+Verificar que existe el archivo `.env`:
+
+```bash
+cat .env
+```
+
+**Contenido esperado:**
+```
+CI_ENVIRONMENT=development
+```
+
+**Captura sugerida**: Contenido del archivo `.env` y estructura de directorios `app/Config/Boot/`.
+
+---
+
+### Verificar Permisos del Directorio Writable**
+
+```bash
+chmod -R 755 writable/
+ls -la writable/
+```
+
+**Captura sugerida**: Permisos del directorio `writable/` y archivo `contacts.csv`.
+
+---
+
+### Ejecutar el Importador Standalone**
+
+El script `contact-importer.php` funciona de forma independiente sin necesidad del framework completo:
+
+```bash
+php contact-importer.php
+```
+
+**Interacción de ejemplo:**
+![Entries de usuario simuladas](screenshoots/succes_entries_added.png)
+
+
+---
+
+### ** Verificar Archivo CSV Generado**
+
+```bash
+cat writable/contacts.csv
+```
+
+**Salida esperada:**
+
+Contenido del archivo CSV con los contactos guardados:  
+![Contenido del CSV](screenshoots/csv_result.png)
+
+---
+
+### ** Ejecutar Script de Prueba**
+
+```bash
+php test-importer.php
+```
+
+**Salida esperada:**
+Salida completa del script de prueba:  
+![Salida del test](screenshoots/total_entries_test.png)
+
+## Estado Actual del CSV
+
+El archivo `writable/contacts.csv` actualmente contiene **5 contactos**, incluyendo:
+
+- Encabezado CSV (Name, Phone, Email)
+- 5 contactos originales
+- 2 contacto de prueba añadido por el script de testç
+
+---
+
+### ** PUNTO 7 - Servidor Web de Desarrollo** (Opcional)
+
+Si deseas probar la interfaz web:
+
+```bash
+php spark serve --host=127.0.0.1 --port=8080
+```
+
+Luego accede a: `http://127.0.0.1:8080/contacts`
+
+**Captura sugerida**: Navegador mostrando la interfaz web con el listado de contactos.
+
+---
+
+### ** Buscador de Contactos** (NUEVA FUNCIONALIDAD)
+Encuentra contactos rápidamente desde la terminal.
+
+**Uso básico:**
+```bash
+# Ver estadísticas e instrucciones
+php contact-search.php
+
+# Buscar por nombre
+php contact-search.php TIAN
+php contact-search.php entry
+```
+
+**Características:**
+- ✅ Búsqueda case-insensitive (no distingue mayúsculas/minúsculas)
+- ✅ Muestra resultados en tabla formateada con colores
+- ✅ Estadísticas de búsqueda (contactos encontrados, líneas revisadas)
+- ✅ Sugerencias si no encuentra resultados
+- ✅ Sin parámetros muestra total de contactos y primeros 5 como ejemplo
+- 
+![Ejemplo de salida del buscador!](screenshoots/search_use.png)

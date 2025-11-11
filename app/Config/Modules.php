@@ -20,7 +20,25 @@ class Modules
      * If true, the system will automatically discover and load
      * all modules in the specified directories.
      */
-    public $autoDiscover = true;
+    public $autoDiscover = false; // Deshabilitado temporalmente
+
+    /**
+     * -------------------------------------------------------------------
+     * Discover in Composer
+     * -------------------------------------------------------------------
+     *
+     * If true, the system will discover services in Composer packages.
+     */
+    public $discoverInComposer = false; // Deshabilitado temporalmente
+
+    /**
+     * -------------------------------------------------------------------
+     * Composer Packages
+     * -------------------------------------------------------------------
+     *
+     * Composer packages to auto-discover from.
+     */
+    public $composerPackages = [];
 
     /**
      * -------------------------------------------------------------------
@@ -51,9 +69,10 @@ class Modules
      *
      * Returns whether the system should auto-discover modules.
      *
+     * @param string $type The type to check (e.g., 'services', 'commands')
      * @return bool
      */
-    public function shouldDiscover(): bool
+    public function shouldDiscover(string $type = ''): bool
     {
         return $this->autoDiscover;
     }
