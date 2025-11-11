@@ -12,8 +12,7 @@ Sistema de importación de contactos desde fichas físicas de Rolodex a formato 
 
 1. **Importación CLI Interactiva**: Solicita datos de contacto (Nombre, Teléfono, Email) en bucle
 2. **Persistencia CSV**: Guarda contactos en `writable/contacts.csv` con encabezado automático
-3. **Interfaz Web MVC**: Visualización básica de contactos mediante controladores y vistas
-4. **Scripts Standalone**: Importador independiente que no requiere framework completo
+3. **Scripts Standalone**: Importador independiente que no requiere framework completo
 
 ---
 
@@ -21,31 +20,26 @@ Sistema de importación de contactos desde fichas físicas de Rolodex a formato 
 
 ```
 04-rolodex-csv/
+├── contact-importer.php           # Importador CLI interactivo
+├── contact-search.php             # Buscador de contactos
+├── test-importer.php              # Script de prueba
+├── run-command.php                # Runner alternativo
+├── writable/
+│   └── contacts.csv               # Base de datos CSV
+├── examples/
+│   └── sample-contacts.csv        # Ejemplo de formato
+├── screenshoots/                  # Capturas de pantalla
+│   ├── csv_result.png
+│   ├── new_entry_load.png
+│   ├── search_use.png
+│   ├── succes_entries_added.png
+│   └── total_entries_test.png
 ├── app/
 │   ├── Commands/
-│   │   └── ContactImport.php          # ⭐ Comando Spark principal
-│   ├── Config/
-│   │   ├── Paths.php                  # Rutas del sistema
-│   │   ├── Routes.php                 # Definición de rutas web
-│   │   ├── Boot/
-│   │   │   ├── development.php        # Bootstrap desarrollo
-│   │   │   └── production.php         # Bootstrap producción
-│   ├── Controllers/
-│   │   └── Contacts.php               # Controlador web de contactos
-│   └── Views/
-│       └── contacts/
-│           ├── index.php              # Vista listado
-│           └── create.php             # Vista crear contacto
-├── writable/
-│   └── contacts.csv                   # 💾 Archivo CSV de salida
-├── examples/
-│   └── sample-contacts.csv            # Ejemplo de formato CSV
-├── public/
-│   └── index.php                      # Front controller web
-├── contact-importer.php               # 🚀 Script standalone
-├── test-importer.php                  # ✅ Script de prueba
-├── spark                              # CLI de CodeIgniter
-└── .env                               # Variables de entorno
+│   │   └── ContactImport.php      # Comando Spark (opcional)
+│   └── Config/                    # Configuración del framework
+├── composer.json                  # Dependencias PHP
+└── .env                           # Variables de entorno
 
 ```
 
@@ -58,39 +52,7 @@ composer install
 composer dump-autoload -o
 ```
 
-**Captura sugerida**: Salida del comando `composer install` mostrando las dependencias instaladas.
-
----
-
-### ** Configuración del Entorno**
-
-Verificar que existe el archivo `.env`:
-
-```bash
-cat .env
-```
-
-**Contenido esperado:**
-```
-CI_ENVIRONMENT=development
-```
-
-**Captura sugerida**: Contenido del archivo `.env` y estructura de directorios `app/Config/Boot/`.
-
----
-
-### Verificar Permisos del Directorio Writable**
-
-```bash
-chmod -R 755 writable/
-ls -la writable/
-```
-
-**Captura sugerida**: Permisos del directorio `writable/` y archivo `contacts.csv`.
-
----
-
-### Ejecutar el Importador Standalone**
+### Ejecutando el Importador Standalone**
 
 El script `contact-importer.php` funciona de forma independiente sin necesidad del framework completo:
 
@@ -134,20 +96,6 @@ El archivo `writable/contacts.csv` actualmente contiene **5 contactos**, incluye
 - Encabezado CSV (Name, Phone, Email)
 - 5 contactos originales
 - 2 contacto de prueba añadido por el script de testç
-
----
-
-### ** PUNTO 7 - Servidor Web de Desarrollo** (Opcional)
-
-Si deseas probar la interfaz web:
-
-```bash
-php spark serve --host=127.0.0.1 --port=8080
-```
-
-Luego accede a: `http://127.0.0.1:8080/contacts`
-
-**Captura sugerida**: Navegador mostrando la interfaz web con el listado de contactos.
 
 ---
 
